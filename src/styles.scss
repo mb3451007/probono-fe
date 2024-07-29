@@ -1,0 +1,370 @@
+/* You can add global styles to this file, and also import other style files */
+
+.glossary_page {
+
+  .side_bar_wrap {
+    background: #4d9d9d;
+    box-shadow: -5px 0px 8px -1px #6c757d42;
+    border-left: 8px solid #00807033;
+
+    .side_item_wrap {
+      padding-right: 10px;
+
+      .item_head {
+        color: #fff;
+        border-bottom: 1px dashed #dee2e6;
+      }
+
+      .item_text {
+        color: #fff;
+        font-size: 1.2em;
+      }
+    }
+
+    .submitting_term_wrap {
+      border: 1px dashed #dee2e6;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  }
+
+  .terms_form_wrap {
+    fieldset {
+      legend {
+
+      }
+    }
+    ng-multiselect-dropdown {
+      .dropdown-btn {
+        background: white;
+        .selected-item-container {
+          .selected-item {
+            background: #fff !important;
+            color: #4d9d9d !important;
+            border-radius: 4px;
+            font-size: 17px;
+            margin: 0px !important;
+            padding: 0;
+            border: none !important;
+          }
+        }
+      }
+    }
+
+    label {
+      font-size: 1.2em;
+      margin-bottom: 5px;
+      font-weight: 500;
+      font-style: italic;
+    }
+  }
+
+  .glossary_items_wrap {
+    .glossary_item {
+      fieldset {
+        margin: 20px 5px;
+        border-radius: 10px;
+        padding: 20px 20px 0;
+        border: 1px solid #f3f3f3;
+        box-shadow: 0 10px 10px -5px rgba(0,0,0,0.1);
+        position: relative;
+
+        legend {
+          font-size: 16px;
+          background: white;
+          border-radius: 30px;
+          display: inline;
+          width: auto;
+          border: 1px solid #f3f3f3;
+          padding: 5px 10px;
+          margin: 0px !important;
+
+          .legend_language {
+            font-weight: 600;
+            color: #4d9d9d;
+          }
+        }
+
+        .action_buttons {
+          position: absolute;
+          right: 10px;
+          top: -20px;
+
+          button {
+            height: 25px;
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+          }
+
+          button.bg_dark {
+            background: #e9ecef !important;
+          }
+
+          button:hover {
+            background: #4d9d9d !important;
+          }
+        }
+
+        .main_wrapper_gloss {
+          width: 100%;
+          display: flex;
+          align-items: stretch;
+
+          .glossary_left {
+            width: 50%;
+            flex: 0 0 50%;
+            border: 1px solid #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            box-sizing: border-box;
+          }
+
+          .glossary_right {
+            width: calc(50% - 15px);
+            flex: 1;
+            background: #f8f9fa;
+            padding: 10px 20px;
+            margin-left: 15px;
+            border-radius: 5px;
+            box-sizing: border-box;
+          }
+
+          .item_head {
+            font-weight: 700;
+            font-size: 16px;
+            margin: 0px 0 10px;
+          }
+
+          .item_text {
+            color: gray;
+          }
+        }
+
+        .glossary_footer {
+          background: #f8f9fa;
+          margin: 20px 0 !important;
+          padding: 2px 10px;
+          border-radius: 10px;
+
+          .user_avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 30px;
+            margin: 0 10px 0 -8px;
+          }
+
+           p {
+             margin: 0px;
+            font-style: italic;
+            color: #9a9a9a;
+
+            span {
+              font-weight: bold;
+            }
+           }
+        }
+
+        .like_dislike_wrap {
+          width: 150px;
+          display: block;
+          margin: 10px auto;
+
+          .like_box {
+            width: 50%;
+
+            button {
+              background: none;
+              display: flex;
+              border: 1px solid #e9ecef;
+              margin: 0;
+              padding: 8px;
+              width: calc(100% + 1px);
+              text-align: center;
+              vertical-align: middle;
+
+              img {
+                width: 20px;
+                height: 20px;
+                margin: -2px 0 1px 2px;
+              }
+
+              .numbers {
+                width: auto;
+                flex: 1;
+                color: #66615b;
+                font-weight: 600;
+                font-size: 16px;
+                margin-left: 10px;
+              }
+            }
+
+            button:hover {
+              background: #e9ecef !important;
+            }
+          }
+
+          .like_box.left {
+            button {
+              border-radius: 10px 0 0 10px;
+            }
+          }
+
+          .like_box.right {
+            button {
+              border-radius: 0px 10px 10px 0px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .single_comments_wrapper {
+    padding: 20px;
+
+    .comments_wrapper {
+      .comment_item {
+        border: 1px solid #f8f9fa;
+        align-items: stretch;
+        margin: 0 0 20px;
+        border-radius: 5px;
+
+        .user_data {
+          width: 100px;
+          flex: 0 0 100px;
+          box-sizing: border-box;
+          padding: 10px;
+          text-align: center;
+          background: #f8f9fa;
+
+          .avatar {
+            width: 50px !important;
+            height: 50px !important;
+            margin-bottom: 10px;
+          }
+
+          .user_names {
+            font-weight: bold;
+            margin: 0 -20px;
+          }
+        }
+
+        .comment_data {
+          width: auto;
+          flex: 1;
+          box-sizing: border-box;
+          padding: 10px 20px;
+
+          .comment {
+            font-size: 1.2em;
+            letter-spacing: 0.35px;
+          }
+
+          .comment_date {
+            font-style: italic;
+            color: gray;
+          }
+        }
+      }
+    }
+
+    .item_head {
+      font-size: 25px;
+      font-weight: 600;
+      color: #4d9d9d;
+      border-bottom: 1px dashed;
+      margin-bottom: 20px !important;
+      line-height: 1.5;
+    }
+  }
+}
+
+.fw-bolder {
+  font-weight: 900 !important;
+}
+
+.fw-bold {
+  font-weight: 600px !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.text-larger {
+  font-size: 1.2em;
+}
+
+.br-left {
+  border-radius: 10px 0 0 5px !important;
+}
+
+.br-right {
+  border-radius: 0px 10px 5px 0px !important;
+}
+
+.belt_color {
+  border: 1px solid #dee2e6;
+  width: 38px;
+  height: 18px;
+  display: inline-block;
+  border-radius: 4px;
+  margin: 0px 5px -1px 0;
+}
+
+.belt_color.no_belt {
+  border: 1px solid white;
+}
+
+.belt_color.yellow {
+  background: yellow;
+}
+
+.belt_color.orange {
+  background: orange;
+}
+
+.belt_color.purple {
+  background: purple;
+}
+
+.belt_color.blue {
+  background: blue;
+}
+
+.belt_color.green {
+  background: green;
+}
+
+.belt_color.gray {
+  background: gray;
+}
+
+.belt_color.gold {
+  background: gold;
+}
+
+.belt_color.yellow {
+  background: yellow;
+}
+
+.belt_color.brown {
+  background: brown;
+}
+
+.belt_color.red {
+  background: red;
+}
+
+.belt_color.black {
+  background: black;
+}
+
+.belt_color.red_black {
+  background-image: linear-gradient(to right, red 50%, black 50%);
+}
+
+.star_wrapper {
+  display: inline-block;
+  margin: -5px 0 0px 2px;
+}

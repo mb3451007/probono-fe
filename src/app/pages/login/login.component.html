@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-8 mt-5 ml-auto mr-auto">
+    <div class="card card-upgrade">
+      <div class="card-header text-center pt-5">
+        <h4 class="card-title">Login to Dashboard</h4>
+          <p class="card-category">If you don't have an account, please contact your administrator so they can generate credentials for you.</p>
+      </div>
+      <div class="card-body">
+
+        <form [formGroup]="loginForm" id="loginForm" *ngIf="showForm" class="py-10 px-5 w-300px"  (ngSubmit)="login(loginForm.value)">
+          <div class="mb-3 mt-0">
+            <label class="form-label mb-1">Email:</label>
+            <input class="form-control form-control-solid" type="email" formControlName="email" />
+          </div>
+
+          <div class="mb-3 mt-0">
+            <label class="form-label mb-1">Password: </label>
+            <input class="form-control form-control-solid" type="password" formControlName="password" />
+          </div>
+
+          <div class="row pb-5">
+            <div class="col-12 text-center">
+              <button class="btn bg-success" type="submit">Login</button>
+              <!--button class="btn bg-default" type="button" (click)="forgotPassword()"> Forgot Password? </button-->
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

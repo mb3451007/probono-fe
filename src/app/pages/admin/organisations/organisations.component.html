@@ -1,0 +1,250 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body position-relative">
+        <div class="loading_wrapper_search" *ngIf="isSearching">
+          <div class="text-center">
+            <div class="spinner-grow text-success" style="width: 6rem; height: 6rem;" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <p class="text-muted fs-3 fw-normal my-5">Filtering records, please wait...</p>
+          </div>
+        </div>
+        <div class="show_emails_chosen" *ngIf="visibleEmails">
+          <p class="text-center p-5 message_emails" *ngIf="emailsChosen.length === 0">Click the check buttons below to add emails of the respective volunteers to this list.</p>
+          <p class="text-center actual_emails" *ngIf="emailsChosen.length > 0"><span *ngFor="let email of emailsChosen; let i = index">{{email}}<ng-container *ngIf="i < emailsChosen.length - 1">, </ng-container></span></p>
+        </div>
+        <div class="table-responsive">
+          <table class="table" *ngIf="title === 'organisations'">
+            <thead class=" text-primary">
+              <th>#</th>
+              <th class="text-nowrap" (click)="sortData('name')">Name
+                <button class="btn sort_button bg-{{sortType === 'name' ? 'success' : 'default'}}">
+                  <i class="nc-icon nc-minimal-down" *ngIf="(sortType === 'name' && sortMode === 'asc') ||  sortType === '' || sortType === 'words'"></i>
+                  <i class="nc-icon nc-minimal-up" *ngIf="sortType === 'name' && sortMode === 'desc'"></i>
+                </button>
+              </th>
+              <!--th>Volunteer(s)</th-->
+              <th>Language</th>
+              <th class="text-right text-nowrap" (click)="sortData('words')">Words
+                <button class="btn sort_button bg-{{sortType === 'words' ? 'success' : 'default'}}">
+                  <i class="nc-icon nc-minimal-down" *ngIf="(sortType === 'words' && sortMode === 'asc') || sortType === '' || sortType === 'name'"></i>
+                  <i class="nc-icon nc-minimal-up" *ngIf="sortType === 'words' && sortMode === 'desc'"></i>
+                </button>
+              </th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of entriesOrganisations | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+                <td>{{(page - 1) * itemsPerPage + i + 1}})</td>
+                <td>{{rec.name}}</td>
+                <!--td>{{rec.volunteerData?.length === 0 ? 'No Volunteer(s).' : ''}}
+                  <span *ngFor="let vol of rec.volunteerData; let i = index">{{vol.first_name}} {{vol.last_name}}<ng-container *ngIf="i < rec.volunteerData.length - 1">, </ng-container> </span>
+                </td-->
+                <td>{{rec.language}} ({{rec.language_code}})</td>
+                <td class="text-right">{{rec.words ? (rec.words | currency : '' : '' : '2.0') : 0}}</td>
+                <td class="text-right">
+                  <div class="action_buttons d-block">
+                    <button class="btn bg-primary" (click)="viewRecord(rec)"><i class="nc-icon nc-laptop"></i></button>
+                    <button class="btn bg-primary" (click)="editRecord(rec)"><i class="nc-icon nc-settings"></i></button>
+                    <button class="btn bg-danger" (click)="removeRecord(rec)"><i class="nc-icon nc-simple-remove"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table" *ngIf="title === 'projects'">
+            <thead class=" text-primary">
+              <th>#</th>
+              <th class="text-nowrap" (click)="sortData('name')">Organisation
+                <button class="btn sort_button bg-{{sortType === 'name' ? 'success' : 'default'}}">
+                  <i class="nc-icon nc-minimal-down" *ngIf="(sortType === 'name' && sortMode === 'asc') ||  sortType === '' || sortType === 'words'"></i>
+                  <i class="nc-icon nc-minimal-up" *ngIf="sortType === 'name' && sortMode === 'desc'"></i>
+                </button>
+              </th>
+              <th>SN.</th>
+              <th>Description</th>
+              <th>Volunteer(s)</th>
+              <th>Progress</th>
+              <th>Due</th>
+              <!--th class="text-right text-nowrap" (click)="sortData('words')">Words
+                <button class="btn sort_button bg-{{sortType === 'words' ? 'success' : 'default'}}">
+                  <i class="nc-icon nc-minimal-down" *ngIf="(sortType === 'words' && sortMode === 'asc') || sortType === '' || sortType === 'name'"></i>
+                  <i class="nc-icon nc-minimal-up" *ngIf="sortType === 'words' && sortMode === 'desc'"></i>
+                </button>
+              </th-->
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of entriesProjects | stringFilter: filter | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+                <td>{{(page - 1) * itemsPerPage + i + 1}})</td>
+                <td>{{rec.organisation}}</td>
+                <td class="">{{rec.id}}</td>
+                <td class="">{{rec.task}}</td>
+                <td>
+                  <div class="overdue_flag" *ngIf="(rec.due | overdue) && rec.progress !== 'Completed'"><span class="note_due">Overdue</span> <span class="actual_days_missed">{{rec.due | overdue: 'YYYY-MM-DDTHH:mm:ss' }}</span></div>
+                  {{rec.volunteerData?.length === 0 ? 'No Volunteer(s).' : ''}}
+                  <span *ngFor="let vol of rec.volunteerData; let i = index">{{vol.first_name}} {{vol.last_name}}<ng-container *ngIf="i < rec.volunteerData.length - 1">, </ng-container> </span>
+                </td>
+                <td class="progress_column">
+                  <p [ngClass]="rec.progress === 'Not Started' ? 'bg-info text-white' : rec.progress === 'Completed' ? 'bg-success text-white overide-white-text' : 'bg-warning'"><span [ngStyle]="{'color': rec.progress == 'Completed' ? 'white' : 'black' }">{{rec.progress}}</span></p>
+                </td>
+                <td>{{rec.due | date: 'mediumDate'}}</td>
+                <td class="text-right">
+                  <div class="action_buttons d-block">
+                    <button class="btn bg-primary" (click)="viewRecord(rec)"><i class="nc-icon nc-laptop"></i></button>
+                    <button class="btn bg-primary" (click)="editRecord(rec)"><i class="nc-icon nc-settings"></i></button>
+                    <button class="btn bg-danger" (click)="removeRecord(rec)"><i class="nc-icon nc-simple-remove"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table" *ngIf="title === 'volunteers'">
+            <thead class=" text-primary">
+              <th *ngIf="visibleEmails"><input type="checkbox" (click)="addIfCheckedAll($event)"> All</th>
+              <th>#</th>
+              <th class="text-nowrap" (click)="sortData('name')">Names
+                <button class="btn sort_button bg-{{sortType === 'name' ? 'success' : 'default'}}">
+                  <i class="nc-icon nc-minimal-down" *ngIf="(sortType === 'name' && sortMode === 'asc') ||  sortType === '' || sortType === 'words'"></i>
+                  <i class="nc-icon nc-minimal-up" *ngIf="sortType === 'name' && sortMode === 'desc'"></i>
+                </button>
+              </th>
+              <th>Profile</th>
+              <th>Language</th>
+              <th>Hours</th>
+              <th class="text-right text-nowrap" (click)="sortData('words')">Words
+                <button class="btn sort_button bg-{{sortType === 'words' ? 'success' : 'default'}}">
+                  <i class="nc-icon nc-minimal-down" *ngIf="(sortType === 'words' && sortMode === 'asc') || sortType === '' || sortType === 'name'"></i>
+                  <i class="nc-icon nc-minimal-up" *ngIf="sortType === 'words' && sortMode === 'desc'"></i>
+                </button>
+              </th>
+              <th class="text-right">
+                <!--button type="button" class="btn btn-bg-light" (click)="showEmails()">{{visibleEmails ? 'Hide' : 'Emails'}}</button-->
+                <button type="button" class="btn btn-bg-light p-1" (click)="downloadVolunteers()">Get CSV</button>
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of entriesVolunteers | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+                <td *ngIf="visibleEmails"><input [checked]="rec.checked" type="checkbox" (click)="addIfCheckedOne($event, rec)"></td>
+                <td>{{(page - 1) * itemsPerPage + i + 1}})</td>
+                <td>{{rec.first_name}} {{rec.last_name}}</td>
+                <td><a [href]="'https://' + rec.profile" target="_blank">{{rec.profile}}</a></td>
+                <td>{{rec.language}} ({{rec.language_code}})<ng-container *ngIf="rec.secondary_languages?.length > 0">;
+                    <span *ngFor="let lng of rec.secondary_languages; let j = index"> {{lng.name}}<ng-container *ngIf="j < rec.secondary_languages?.length - 1">, </ng-container> </span>
+                  </ng-container>
+                </td>
+                <td class="text-right">{{rec.hours ? (rec.hours | currency : '' : '' : '2.0') : 0}}</td>
+                <td class="text-right">{{rec.words ? (rec.words | currency : '' : '' : '2.0') : 0}}</td>
+                <td class="text-right">
+                  <div class="action_buttons d-block">
+                    <button class="btn bg-primary text-white" (click)="viewRecord(rec)"><i class="nc-icon nc-laptop"></i></button>
+                    <button class="btn bg-primary" (click)="editRecord(rec)"><i class="nc-icon nc-settings"></i></button>
+                    <button class="btn bg-danger" (click)="removeRecord(rec)"><i class="nc-icon nc-simple-remove"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table" *ngIf="title === 'words'">
+            <thead class=" text-primary">
+              <th>#</th>
+              <th>Submitted</th>
+              <th>Organisation</th>
+              <th>Volunteer</th>
+              <th>Code</th>
+              <th class="text-right">Words</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of entriesWords | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+                <td>{{(page - 1) * itemsPerPage + i + 1}})</td>
+                <td>{{rec.date_created | date: 'mediumDate'}}</td>
+                <td>{{rec.organisation}}</td>
+                <td>{{rec.volunteer_first_name}} {{rec.volunteer_last_name}}</td>
+                <td class="text-uppercase" style="white-space: nowrap">{{rec.language_code}}-{{rec.language_code_to}}</td>
+                <td class="text-right">{{rec.words ? (rec.words | currency : '' : '' : '2.0') : 0}}</td>
+                <td class="text-right">
+                  <div class="action_buttons d-block">
+                    <button class="btn bg-primary text-white" (click)="viewRecord(rec)"><i class="nc-icon nc-laptop"></i></button>
+                    <button class="btn bg-primary" (click)="editRecord(rec)"><i class="nc-icon nc-settings"></i></button>
+                    <button class="btn bg-danger" (click)="removeRecord(rec)"><i class="nc-icon nc-simple-remove"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table" *ngIf="title === 'hours'">
+            <thead class=" text-primary">
+              <th>#</th>
+              <th>Volunteer</th>
+              <th class="text-left">Hours</th>
+              <th>Organisation</th>
+              <th>Code</th>
+              <th>Submitted</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of entriesHours | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+                <td>{{(page - 1) * itemsPerPage + i + 1}})</td>
+
+                <td>{{rec.volunteer_first_name}} {{rec.volunteer_last_name}}</td>
+                <td class="text-left">{{rec.hours ? (rec.hours | currency : '' : '' : '2.0') : 0}}</td>
+                <td>{{rec.organisation}}</td>
+                <td class="text-uppercase" style="white-space: nowrap">{{rec.language_code}}-{{rec.language_code_to}}</td>
+                <td>{{rec.date_created | date: 'mediumDate'}}</td>
+
+                <td class="text-right">
+                  <div class="action_buttons d-block">
+                    <button class="btn bg-primary text-white" (click)="viewRecord(rec)"><i class="nc-icon nc-laptop"></i></button>
+                    <button class="btn bg-primary" (click)="editRecord(rec)"><i class="nc-icon nc-settings"></i></button>
+                    <button class="btn bg-danger" (click)="removeRecord(rec)"><i class="nc-icon nc-simple-remove"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table" *ngIf="title === 'stars'">
+            <thead class=" text-primary">
+              <th>#</th>
+              <th>Volunteer</th>
+              <th class="text-left">Stars</th>
+              <th>Type</th>
+              <th>Submitted</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of entriesStars | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+                <td>{{(page - 1) * itemsPerPage + i + 1}})</td>
+
+                <td>{{rec.volunteer_first_name}} {{rec.volunteer_last_name}}</td>
+                <td class="text-left">{{rec.stars ? (rec.stars | currency : '' : '' : '2.0') : 0}}</td>
+                <td style="white-space: nowrap">{{rec.type | contribution}}</td>
+                <td>{{rec.date_created | date: 'mediumDate'}}</td>
+
+                <td class="text-right">
+                  <div class="action_buttons d-block">
+                    <button class="btn bg-primary text-white" (click)="viewRecord(rec)"><i class="nc-icon nc-laptop"></i></button>
+                    <button class="btn bg-primary" (click)="editRecord(rec)"><i class="nc-icon nc-settings"></i></button>
+                    <button class="btn bg-danger" (click)="removeRecord(rec)"><i class="nc-icon nc-simple-remove"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pagination-controls
+          class="pagi"
+          (pageChange)="setNewPage($event)"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal #modal [modalConfig]="modalConfig">
+</app-modal>

@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="d-none d-sm-block  d-md-block  d-lg-block d-xl-block col-12 my-0 col-sm-12 col-md-12 col-xs-12">
+          <h4 class="card-title my-1"> Volunteer Stats</h4>
+          <p class="sum_text text-muted m-0">Click the small arrows to see alphabetical order or order in terms of words translated.</p>
+          </div>
+          <div class="col-12 col-xs-12">
+            <div class="d-flex flex-row">
+            <form class="rounded-5 w-100 search_inner_wrap mt-3 mb-0 mx-1 flex-1">
+              <div class="input-group border-1 bg-white rounded-5" style="border-radius: 5px; overflow: hidden">
+                <input type="text" value="" (keyup)="searchFor($event)" class="form-control rounded-5 bg-white" placeholder="First name...">
+                <div class="input-group-append bg-white rounded-5">
+                  <div class="input-group-text bg-white">
+                    <i class="nc-icon nc-zoom-split"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <ul class="rounded-5 navbar-nav special-button-per-page mt-3 mb-0 mx-1">
+              <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
+                <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >
+                  Show: {{totalItems}}
+                </a>
+                <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-left">
+                  <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(10)">10</a>
+                  <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(50)">50</a>
+                  <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(100)">100</a>
+                  <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(250)">250</a>
+                  <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(10000)">Show all</a>
+                </div>
+              </li>
+            </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body position-relative">
+        <div class="w-100 py-5 loading_wrapp align-items-center mx-auto my-5" *ngIf="entriesVolunteers.length === 0">
+          <div class="text-center">
+            <div *ngIf="isLoading === true" class="spinner-grow text-success" style="width: 6rem; height: 6rem;" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <p *ngIf="isLoading === true" class="text-muted fs-3 fw-normal my-5">Loading records, please wait...</p>
+            <p *ngIf="isLoading === false" class="text-muted fs-3 fw-normal my-5">No Records.</p>
+          </div>
+        </div>
+        <div class="loading_wrapper_search" *ngIf="isSearching">
+          <div class="text-center">
+            <div class="spinner-grow text-success" style="width: 6rem; height: 6rem;" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <p class="text-muted fs-3 fw-normal my-5">Filtering records, please wait...</p>
+          </div>
+        </div>
+        <div class="table-responsive" *ngIf="entriesVolunteers.length > 0">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>#</th>
+              <th class="text-nowrap" (click)="sortData('name')">Names
+                <button class="btn sort_button bg-{{sortType === 'name' ? 'success' : 'default'}}">
+                  <i class="nc-icon nc-minimal-down" *ngIf="(sortType === 'name' && sortMode === 'asc') ||  sortType === '' || sortType === 'words'"></i>
+                  <i class="nc-icon nc-minimal-up" *ngIf="sortType === 'name' && sortMode === 'desc'"></i>
+                </button>
+                </th>
+              <th>Profile</th>
+              <th>Language</th>
+              <th>Hours</th>
+              <th class="text-right text-nowrap" (click)="sortData('words')">Words
+                <button class="btn sort_button bg-{{sortType === 'words' ? 'success' : 'default'}}">
+                  <i class="nc-icon nc-minimal-down" *ngIf="(sortType === 'words' && sortMode === 'asc') || sortType === '' || sortType === 'name'"></i>
+                  <i class="nc-icon nc-minimal-up" *ngIf="sortType === 'words' && sortMode === 'desc'"></i>
+                </button>
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of entriesVolunteers  | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+                <td>{{i + 1}})</td>
+                <td>{{rec.first_name}} {{rec.last_name}}</td>
+                <td><a [href]="'https://' + rec.profile" target="_blank">{{rec.profile}}</a></td>
+                <td>{{rec.language}} ({{rec.language_code}})<ng-container *ngIf="rec.secondary_languages?.length > 0">;
+                    <span *ngFor="let lng of rec.secondary_languages; let j = index"> {{lng.name}}<ng-container *ngIf="j < rec.secondary_languages?.length - 1">, </ng-container> </span>
+                  </ng-container>
+                </td>
+                <td class="text-left">{{rec.hours ? (rec.hours | currency : '' : '' : '2.0') : 0}}</td>
+                <td class="text-right">{{rec.words ? (rec.words | currency : '' : '' : '2.0') : 0}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls class="pagi" (pageChange)="loadPage($event)"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<ng-template #modal>
+  <div class="modal-content w-700px h-80">
+    <div class="modal-body">
+      <div class="tables_content py-0">
+
+        <div class="form_section overflow-y-auto h-450px">
+          <app-modal-form (formActions)="formUpdates($event)" [table_name]="modalConfig.table" [record]="modalConfig.record" [recordId]="modalConfig.id" [type]="modalConfig.type"></app-modal-form>
+        </div>
+
+      </div>
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="close()"
+        *ngIf="modalConfig.hideCloseButton === undefined || !modalConfig.hideCloseButton()"
+        [disabled]="modalConfig.disableCloseButton !== undefined && modalConfig.disableCloseButton()">
+        {{ modalConfig.closeButtonLabel }}
+      </button>
+    </div>
+  </div>
+</ng-template>

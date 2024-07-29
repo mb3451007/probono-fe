@@ -1,0 +1,342 @@
+<div class="row glossary_page">
+  <div class="col-12">
+    <div class="card overflow-hidden">
+      <div class="row">
+        <!-- Main content -->
+        <div class="col-12 col-md-9">
+          <div class="card-header">
+            <div class="row">
+              <div class="d-none d-sm-block  d-md-block  d-lg-block d-xl-block col-12 my-0 col-sm-12 col-md-12 col-xs-12">
+                <h4 class="card-title my-1"> GLOSSARY</h4>
+                <p class="sum_text text-muted m-0">List of glossary items in the ProZ.com Probono Statistics dashboard. Search by source or target text below.</p>
+              </div>
+
+              <div *ngIf="viewMode === 'multiple'" class="col-12 col-sm-12 col-md-12 col-xs-12">
+                <div class="d-flex flex-row">
+                <form class="rounded-5 w-100 search_inner_wrap mt-3 mb-0 mx-1 flex-1">
+                  <div class="input-group border-1 bg-white rounded-5" style="border-radius: 5px; overflow: hidden">
+                    <input type="text" value="" (keyup)="searchFor($event)" class="form-control rounded-5 bg-white" placeholder="Source text or target text...">
+                    <div class="input-group-append bg-white rounded-5">
+                      <div class="input-group-text bg-white">
+                        <i class="nc-icon nc-zoom-split"></i>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <ul class="rounded-5 navbar-nav special-button-per-page mt-3 mb-0 mx-1">
+                  <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
+                    <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >
+                      Show: {{itemsPerPage}}
+                    </a>
+                    <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-left">
+                      <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(10)">10</a>
+                      <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(50)">50</a>
+                      <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(100)">100</a>
+                      <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(250)">250</a>
+                    </div>
+                  </li>
+                </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="card-body position-relative">
+            <ng-container *ngIf="viewMode === 'multiple'">
+              <div class="w-100 py-5 loading_wrapp align-items-center mx-auto my-5" *ngIf="glossaryItems?.length === 0">
+                <div class="text-center">
+                  <div *ngIf="isLoading === true" class="spinner-grow text-success" style="width: 6rem; height: 6rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <p *ngIf="isLoading === true" class="text-muted fs-3 fw-normal my-5">Loading records, please wait...</p>
+                  <p *ngIf="isLoading === false" class="text-muted fs-3 fw-normal my-5">No Records.</p>
+                </div>
+              </div>
+              <div class="loading_wrapper_search" *ngIf="isSearching">
+                <div class="text-center">
+                  <div class="spinner-grow text-success" style="width: 6rem; height: 6rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <p class="text-muted fs-3 fw-normal my-5">Filtering terms, please wait...</p>
+                </div>
+              </div>
+
+            <!-- Multiple terms -->
+              <div class="glossary_items_wrap" *ngIf="glossaryItems?.length > 0">
+                <div class="glossary_item" *ngFor="let rec of glossaryItems  | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+
+                  <fieldset><legend class="pointer" (click)="openTerm(rec)"><span class="legend_language">{{rec.source | lang :'lang'}}</span> > <span class="legend_language">{{rec.target | lang :'lang'}}</span></legend>
+                    <div class="action_buttons">
+                      <button class="btn btn-sm bg-light px-2 mr-2 text-primary" (click)="openTerm(rec)"><i class="nc-icon nc-chat-33"></i> {{rec.allcomments}}</button>
+                      <button *ngIf="showActions" class="btn btn-sm bg-light px-2 mr-2 text-primary" (click)="openTerm(rec)"><i class="nc-icon nc-simple-add"></i> Open term</button>
+                      <button *ngIf="showActions && user?.is_admin" class="btn btn-sm bg-light px-2 mr-2 text-primary" (click)="editTerm(rec, 'all')"><i class="nc-icon nc-ruler-pencil"></i></button>
+                      <button *ngIf="showActions && !rec.verified && user?.is_admin" class="btn btn-sm bg-light px-2 mr-2 text-success" (click)="editTerm(rec, true)"><i class="nc-icon nc-check-2"></i></button>
+                      <button *ngIf="showActions && rec.verified && user?.is_admin" class="btn btn-sm bg-light px-2 mr-2 text-primary" (click)="editTerm(rec, false)"><i class="nc-icon nc-refresh-69"></i></button>
+                      <button *ngIf="showActions && user?.is_admin" class="btn btn-sm bg-light px-2 mr-2 text-danger" (click)="deleteTerm(rec)"><i class="nc-icon nc-simple-delete"></i></button>
+                      <button *ngIf="!showActions" class="btn btn-sm bg-light px-2 mr-2 text-dark" (click)="showActions = true"><i class="nc-icon nc-bullet-list-67"></i></button>
+                      <button *ngIf="showActions" class="btn btn-sm px-2 bg_dark mr-2 text-dark" (click)="showActions = false"><i class="nc-icon nc-simple-remove"></i></button>
+                    </div>
+
+                    <div class="main_wrapper_gloss">
+                      <div class="glossary_left">
+                        <h4 class="item_head">{{rec.source | lang :'lang'}}</h4>
+                        <p class="item_text">{{rec.source_text}}</p>
+                      </div>
+                      <div class="glossary_right">
+                        <h4 class="item_head">{{rec.target | lang :'lang'}}</h4>
+                        <p class="item_text">{{rec.target_text}}</p>
+                      </div>
+                    </div>
+                    <div class="like_dislike_wrap d-flex flex-wrap">
+                      <div class="like_box left">
+                        <button [disabled]="buttonClicked" class="btn like btn-success" (click)="likeTerm(rec, true)">
+                          <img src="assets/img/like.png" alt="Upvote" />
+                          <span class="numbers">{{rec.likes}}</span>
+                        </button>
+                      </div>
+
+                      <div class="like_box right">
+                        <button [disabled]="buttonClicked" class="btn like btn-danger" (click)="likeTerm(rec, false)">
+                          <img src="assets/img/dislike.png" alt="Downvote" />
+                          <span class="numbers">{{rec.dislikes}}</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="glossary_footer">
+                      <p *ngFor="let user of [(rec?.user_id | entity | async)]"><img class="user_avatar" [src]="user?.image_url || './assets/img/av_load.gif'" />By <span>{{user?.first_name}} {{user?.last_name}}</span>, published in <span>{{rec.field | lang: 'cat'}}</span>, on <span>{{rec.date_created | date: 'longDate'}}</span></p>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <pagination-controls class="pagi" (pageChange)="loadPage($event)"></pagination-controls>
+              </div>
+            </ng-container>
+
+            <!-- Single term -->
+            <div class="glossary_items_wrap" *ngIf="viewMode === 'single'">
+              <div class="w-100 py-5 loading_wrapp align-items-center mx-auto my-5" *ngIf="!term">
+                <div class="text-center">
+                  <div *ngIf="isLoading === true" class="spinner-grow text-success" style="width: 6rem; height: 6rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <p *ngIf="isLoading === true" class="text-muted fs-3 fw-normal my-5">Loading term, please wait...</p>
+                  <p *ngIf="isLoading === false" class="text-muted fs-3 fw-normal my-5">Glossary Item with ID: <strong>{{termId}}</strong> does not exist.</p>
+                </div>
+              </div>
+
+              <div class="glossary_item" *ngIf="term">
+
+                <fieldset><legend><span class="legend_language">{{term.source | lang :'lang'}}</span> > <span class="legend_language">{{term.target | lang :'lang'}}</span></legend>
+                  <div class="action_buttons">
+                    <button class="btn btn-sm bg-light px-2 mr-2 text-primary" (click)="openTerm(term)"><i class="nc-icon nc-chat-33"></i> {{term.allcomments}}</button>
+                    <!--button *ngIf="showActions" class="btn btn-sm bg-light px-2 mr-2 text-primary" (click)="openTerm(rec)"><i class="nc-icon nc-simple-add"></i> Open term</button-->
+                    <button *ngIf="showActions && user?.is_admin" class="btn btn-sm bg-light px-2 mr-2 text-primary" (click)="editTerm(term, 'all')"><i class="nc-icon nc-ruler-pencil"></i></button>
+                    <button *ngIf="showActions && !term.verified && user?.is_admin" class="btn btn-sm bg-light px-2 mr-2 text-success" (click)="editTerm(term, true)"><i class="nc-icon nc-check-2"></i></button>
+                    <button *ngIf="showActions && term.verified && user?.is_admin" class="btn btn-sm bg-light px-2 mr-2 text-primary" (click)="editTerm(term, false)"><i class="nc-icon nc-refresh-69"></i></button>
+                    <button *ngIf="showActions && user?.is_admin" class="btn btn-sm bg-light px-2 mr-2 text-danger" (click)="deleteTerm(term)"><i class="nc-icon nc-simple-delete"></i></button>
+                    <button *ngIf="!showActions" class="btn btn-sm bg-light px-2 mr-2 text-dark" (click)="showActions = true"><i class="nc-icon nc-bullet-list-67"></i></button>
+                    <button *ngIf="showActions" class="btn btn-sm px-2 bg_dark mr-2 text-dark" (click)="showActions = false"><i class="nc-icon nc-simple-remove"></i></button>
+                  </div>
+
+                  <div class="main_wrapper_gloss">
+                    <div class="glossary_left">
+                      <h4 class="item_head">{{term.source | lang :'lang'}}</h4>
+                      <p class="item_text">{{term.source_text}}</p>
+                    </div>
+                    <div class="glossary_right">
+                      <h4 class="item_head">{{term.target | lang :'lang'}}</h4>
+                      <p class="item_text">{{term.target_text}}</p>
+                    </div>
+                  </div>
+                  <div class="like_dislike_wrap d-flex flex-wrap">
+                    <div class="like_box left">
+                      <button [disabled]="buttonClicked" class="btn like btn-success" (click)="likeTerm(term, true)">
+                        <img src="assets/img/like.png" alt="Upvote" />
+                        <span class="numbers">{{term?.likes}}</span>
+                      </button>
+                    </div>
+
+                    <div class="like_box right">
+                      <button [disabled]="buttonClicked" class="btn like btn-danger" (click)="likeTerm(term, false)">
+                        <img src="assets/img/dislike.png" alt="Downvote" />
+                        <span class="numbers">{{term?.dislikes}}</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="glossary_footer">
+                    <p *ngFor="let user of [(term?.user_id | entity | async)]"><img class="user_avatar" [src]="user?.image_url || './assets/img/av_load.gif'" />By <span>{{user?.first_name}} {{user?.last_name}}</span>, published in <span>{{term.field | lang: 'cat'}}</span>, on <span>{{term.date_created | date: 'longDate'}}</span></p>
+                  </div>
+                </fieldset>
+              </div>
+
+              <div class="single_comments_wrapper">
+                <h3 class="item_head mt-4 mb-0">Comments & Suggestions</h3>
+                <p class="item_text" *ngIf="user"> Add your contributions to the above entry here or start the conversation with your suggestions. </p>
+                <p class="item_text" *ngIf="!user"> You must be logged in to leave a comment. </p>
+
+                <div class="row">
+                  <div class="col-12">
+                    <div class="comments_wrapper">
+                      <div class="comment_item d-flex flex-wrap" *ngFor="let comment of comments  | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalItems}; let i = index">
+                        <div class="user_data" *ngFor="let user of [(comment.user_id | entity | async)]">
+                          <img class="avatar" [src]="user?.image_url || './assets/img/av_load.gif'"/>
+                          <p class="user_names">{{user?.first_name}} {{user?.last_name}}</p>
+                        </div>
+                        <div class="comment_data">
+                          <p class="comment">{{comment.description}}</p>
+                          <p class="comment_date">Published on {{comment.date_created | date: 'longDate'}}</p>
+                        </div>
+                      </div>
+
+                      <pagination-controls class="pagi" (pageChange)="loadPage($event)"></pagination-controls>
+                    </div>
+                  </div>
+                </div>
+
+                <form *ngIf="showCommentForm" class="pr-3" [formGroup]="commentForm" id="commentForm">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="text-white">Your comments</label>
+                        <textarea formControlName="description" rows="5" class="form-control textarea" placeholder="Add your comment"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="form-group">
+                        <button class="btn btn-primary" type="button" (click)="sendComment(commentForm.value)">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- side bar -->
+        <div class="col-12 col-md-3 p-3 side_bar_wrap">
+
+          <div *ngIf="!user && !showLogin" class="side_item_wrap">
+            <h3 class="item_head">LOGIN</h3>
+            <p class="item_text">Login with your ProZ Probono Site credentials; to add translations to the glossary and to be able to upvote or downvote the glossary terms.</p>
+            <button class="btn btn-primary" type="button" (click)="showLoginForm()">Login now</button>
+          </div>
+
+          <div *ngIf="!user && showLogin" class="side_item_wrap">
+            <h3 class="item_head">LOGIN FORM</h3>
+            <form  class="pr-3" [formGroup]="loginForm" id="loginForm">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="text-white">Username / Email</label>
+                    <input formControlName="email" type="text" class="form-control" placeholder="Name">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="text-white">Details</label>
+                    <input formControlName="password" type="password" class="form-control" placeholder="Password">
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="form-group">
+                    <button class="btn btn-primary" type="button" (click)="login(loginForm.value)">Login</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div *ngIf="user" class="side_item_wrap">
+            <h4 class="item_head mr-3">NEW TERM</h4>
+            <p class="item_text mr-3" *ngIf="!showTermsForm">Add a new term / translation to the glossary.</p>
+
+            <div class="text-center submitting_term_wrap mr-3 mt-4" *ngIf="is_submitting || submittingText !== ''">
+              <div *ngIf="is_submitting === true" class="spinner-grow text-light" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <p *ngIf="submittingText" class="text-white item_text fw-bolder my-2">{{submittingText}}</p>
+            </div>
+
+            <ng-container *ngIf="!is_submitting && submittingText === ''">
+              <button  *ngIf="!showTermsForm" class="btn btn-primary" type="button" (click)="addTerms()">Add terms</button>
+              <div class="terms_form_wrap mt-4 mb-5 pb-4 pr-3" *ngIf="showTermsForm">
+                <form [formGroup]="termForm" id="termForm">
+                  <div class="row" *ngIf="activeStep === 'src'">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="text-white">Source language</label>
+                        <ng-multiselect-dropdown
+                          [placeholder]="'Choose a Language'"
+                          [settings]="dropdownSettingsLanguages"
+                          [data]="languages"
+                          formControlName="source"
+                        >
+                      </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-12" *ngIf="termForm.value.source">
+                      <div class="form-group">
+                        <label class="text-white">Source text</label>
+                        <textarea formControlName="source_text" rows="2" class="form-control textarea" placeholder="Source text"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="activeStep === 'target'">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="text-white">Target language</label>
+                        <ng-multiselect-dropdown
+                          [placeholder]="'Choose a Language'"
+                          [settings]="dropdownSettingsLanguages"
+                          [data]="languages"
+                          formControlName="target"
+                        >
+                      </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                    <div class="col-12" *ngIf="termForm.value.target">
+                      <div class="form-group">
+                        <label class="text-white">Target text</label>
+                        <textarea formControlName="target_text" rows="2" class="form-control textarea" placeholder="Target text"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="activeStep === 'submit'">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="text-white">Field / Category</label>
+                        <ng-multiselect-dropdown
+                          [placeholder]="'Choose a Field'"
+                          [settings]="dropdownSettingsCats"
+                          [data]="categories"
+                          formControlName="field"
+                        >
+                      </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group text-center">
+                        <button *ngIf="activeStep !== 'submit'" class="btn btn-primary text-capitalize" type="button" (click)="nextStep()">Next...</button>
+                        <button *ngIf="activeStep === 'submit'" class="btn btn-primary" type="button" (click)="submitTerm(termForm.value)">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

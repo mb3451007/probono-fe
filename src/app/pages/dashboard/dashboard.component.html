@@ -1,0 +1,249 @@
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-3 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-globe text-warning"></i>
+            </div>
+          </div>
+          <div class="col-9 col-md-8">
+            <div class="numbers">
+              <p class="card-category text-nowrap">Words translated</p>
+              <p class="card-title">
+                <div class="text-center" *ngIf="!numberWords">
+                  <div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+                {{numberWords | currency : '' : '' : '2.0'}}
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>
+        <div class="stats">
+          <i class="fa fa-refresh"></i> Updated.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-3 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-globe-2 text-success"></i>
+            </div>
+          </div>
+          <div class="col-9 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Organisations <!--Served--></p>
+              <p class="card-title">
+                <div class="text-center" *ngIf="!numberOrganisations">
+                  <div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+                {{numberOrganisations | currency : '' : '' : '2.0'}}
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>
+        <div class="stats">
+          <i class="fa fa-refresh"></i> Updated.
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-vector text-danger"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Errors</p>
+              <p class="card-title">23
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>
+        <div class="stats">
+          <i class="fa fa-clock-o"></i> In the last hour
+        </div>
+      </div>
+    </div>
+  </div-->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-3 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-favourite-28 text-primary"></i>
+            </div>
+          </div>
+          <div class="col-9 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Volunteers</p>
+              <p class="card-title">
+                <div class="text-center" *ngIf="!numberVolunteers">
+                  <div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+                {{numberVolunteers | currency : '' : '' : '2.0'}}
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>
+        <div class="stats">
+          <i class="fa fa-refresh"></i> Updated.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-3 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <i class="nc-icon nc-watch-time text-primary"></i>
+            </div>
+          </div>
+          <div class="col-9 col-md-8">
+            <div class="numbers">
+              <p class="card-category text-nowrap">Hours interpreted</p>
+              <p class="card-title">
+                <div class="text-center" *ngIf="!numberHours">
+                  <div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+                {{numberHours | currency : '' : '' : '2.0'}}
+                <p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>
+        <div class="stats">
+          <i class="fa fa-refresh"></i> Updated.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--div class="row">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header ">
+        <h5 class="card-title">Users Behavior</h5>
+        <p class="card-category">24 Hours performance</p>
+      </div>
+      <div class="card-body ">
+        <p class="text-mutted">Some info here</p>
+      </div>
+    </div>
+  </div>
+</div-->
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card ">
+      <div class="card-header ">
+        <h5 class="card-title mb-1">Categories</h5>
+        <p class="card-category">Sectors covered by our translations</p>
+      </div>
+      <div class="card-body">
+        <div class="text-center" style="margin-bottom: -120px !important" *ngIf="ytdCategories.length === 0">
+          <div class="spinner-grow text-light" style="width: 6rem; height: 6rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+            <p class="text-muted fs-3 fw-normal mt-3">Please wait...</p>
+        </div>
+        <canvas id="chartLanguages" height="200"></canvas>
+      </div>
+      <div class="card-footer">
+        <div class="legend language_list_dashboard">
+          <span *ngFor="let legend of ytdCategories"><i class="fa fa-circle" style="color: {{legend.color}}"></i>{{legend.label}} </span>
+        </div>
+        <hr>
+        <div class="stats">
+          <i class="fa fa-calendar"></i>Categories served.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card card-chart">
+      <div class="card-header text-center">
+        <h5 class="card-title">Week in Focus</h5>
+        <p class="card-category">Changes within the last week.</p>
+      </div>
+
+      <div class="card-body pt-0">
+        <div class="text-center" style="margin-bottom: -60px !important" *ngIf="graphsLoaded === false">
+          <div class="spinner-grow text-light" style="width: 6rem; height: 6rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <p *ngIf="graphsLoaded === false" class="text-muted fs-3 fw-normal mt-3">Loading data, please wait...</p>
+        </div>
+
+        <ng-container>
+          <div class="week_graph_container">
+            <h3 *ngIf="graphsLoaded" class="graphs_title">Words translated: <strong style="color: {{weekColors?.words}}">{{(weekNumbers?.words | currency : '' : '' : '2.0') || 0 }}</strong></h3>
+            <canvas id="wordsGraph" width="600" height="70"></canvas>
+          </div>
+
+          <div class="week_graph_container">
+            <h3 *ngIf="graphsLoaded" class="graphs_title">Pro Bono Organisations enrolled: <strong style="color: {{weekColors?.organisations}}">{{weekNumbers?.organisations || 0}}</strong></h3>
+            <canvas id="organisationsGraph" width="600" height="70"></canvas>
+          </div>
+
+          <div class="week_graph_container">
+            <h3 *ngIf="graphsLoaded" class="graphs_title">Volunteers enrolled: <strong style="color: {{weekColors?.volunteers}}">{{weekNumbers?.volunteers || 0}}</strong></h3>
+            <canvas id="volunteersGraph" width="600" height="70"></canvas>
+          </div>
+
+          <div class="week_graph_container mb-0">
+            <h3 *ngIf="graphsLoaded" class="graphs_title">Hours interpreted: <strong style="color: {{weekColors?.hours}}">{{weekNumbers?.hours || 0}}</strong></h3>
+            <canvas id="hoursGraph" width="600" height="70"></canvas>
+          </div>
+        </ng-container>
+      </div>
+
+
+      <!--div class="card-footer">
+        <div class="chart-legend">
+          <i class="fa fa-circle text-primary"></i> {{year}}
+        </div>
+        <hr/>
+        <div class="card-stats">
+          <i class="fa fa-check"></i> Data information updated.
+        </div>
+      </div-->
+    </div>
+  </div>
+</div>

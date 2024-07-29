@@ -1,0 +1,22 @@
+
+<div class="sidebar-wrapper">
+  <div class="logo logo-wrapper">
+    <a href="/" class="simple-text logo-mini logo-left-side">
+      <div class="logo-image-small">
+        <img src="assets/img/prologo.png">
+      </div>
+    </a>
+    <a href="/" class="simple-text logo-normal logo-words">
+      Proz <span class="text-nowrap">Pro Bono</span> Stats
+    </a>
+  </div>
+  <div class="clearfix"></div>
+    <ul class="nav">
+        <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="side_menu {{menuItem.class}}">
+            <a [routerLink]="[menuItem.path]">
+                <i class="nc-icon {{menuItem.icon}}"></i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li>
+    </ul>
+</div>

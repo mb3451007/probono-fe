@@ -1,0 +1,645 @@
+  <div class="card card-user">
+    <div class="card-header">
+      <h5 class="card-title text-capitalize">{{table_name}}: {{type === 'edit' ? 'Edit' : type === 'view' ? 'View' :'New Record'}}</h5>
+    </div>
+    <div class="card-body" *ngIf="table_name === 'organisations'">
+      <form *ngIf="showForm" [formGroup]="formEntry" id="formEntry" (ngSubmit)="postData(formEntry.value)">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label>Organisation Name</label>
+              <input [readonly]="type === 'view'" formControlName="name" type="text" class="form-control" placeholder="Name">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label>Details</label>
+              <textarea [readonly]="type === 'view'" formControlName="details" rows="3" class="form-control textarea" placeholder="Description"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <div class="form-group">
+              <label>Contact Name</label>
+              <input [readonly]="type === 'view'" formControlName="contact_name" type="text" class="form-control" placeholder="Contact name">
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-group">
+              <label>Email</label>
+              <input [readonly]="type === 'view'" formControlName="contact_email" type="email" class="form-control" placeholder="Contact email">
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-group position-relative">
+              <label>Logo</label>
+              <div class="uploaded_image_wrap" *ngIf="formEntry.value.logo !== ''">
+                <img [src]="formEntry.value.logo" alt="uploaded image" class="upload_image" />
+                <button class="btn btn-sm remove_btn" (click)="removeFile(formEntry, 'logo')"><i class="nc-icon nc-simple-remove"></i></button>
+              </div>
+              <div class="text-center upload_wrapper" *ngIf="uploadingFile">
+                <div class="spinner-grow text-success spinner_left" style="width: 1rem; height: 1rem;" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <p class="text-muted fw-normal">Uploading...</p>
+              </div>
+              <input *ngIf="formEntry.value.logo === ''" [readonly]="type === 'view'" (change)="uploadLogo($event, formEntry, 'logo')" type="file" class="form-control" placeholder="Logo">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Website</label>
+              <input [readonly]="type === 'view'" formControlName="website" type="url" class="form-control" placeholder="Website">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Language</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Language'"
+                [settings]="dropdownSettingsLanguages"
+                [data]="languages"
+                formControlName="language"
+                [disabled]="type === 'view'"
+              >
+            </ng-multiselect-dropdown>
+              <input hidden formControlName="language_code" type="text" class="form-control" placeholder="Code">
+            </div>
+          </div>
+          <div class="d-none">
+            <div class="form-group">
+              <label>Verified</label>
+              <input [readonly]="type === 'view'" formControlName="verified" type="text" class="form-control" placeholder="Verified?">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label>Volunteers</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose Volunteer(s)'"
+                [settings]="dropdownSettingsVolunteers"
+                [data]="entriesVolunteers"
+                formControlName="volunteers"
+                (onSelect)="onItemSelect($event, 'volunteers', 'id')"
+                (onFilterChange)="onFilterChange('volunteers', $event)"
+                [disabled]="type === 'view'"
+              >
+              </ng-multiselect-dropdown>
+              <!--input [readonly]="type === 'view'" formControlName="volunteers" type="text" class="form-control" placeholder="Volunteers"-->
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="type != 'view'">
+          <div class="update ml-auto mr-auto">
+            <button type="submit" class="btn btn-primary btn-round">Save Data</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-body" *ngIf="table_name === 'projects'">
+      <form *ngIf="showForm" [formGroup]="formEntry" id="formEntry" (ngSubmit)="postData(formEntry.value)">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Organisation</label>
+              <ng-multiselect-dropdown
+                [disabled]="type === 'view'"
+                [placeholder]="'Choose an Organisation'"
+                [settings]="dropdownSettings"
+                [data]="entriesOrganisations"
+                formControlName="organisation_id"
+                (onSelect)="onItemSelect($event, 'organisation_id', 'id')"
+                (onFilterChange)="onFilterChange('organisations', $event)"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label>Due Date</label>
+              <input type="date" [readonly]="type === 'view'" formControlName="due" class="form-control" placeholder="Due">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label>Volunteers</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose Volunteer(s)'"
+                [settings]="dropdownSettingsVolunteers"
+                [data]="entriesVolunteers"
+                formControlName="volunteers"
+                (onSelect)="onItemSelect($event, 'volunteers', 'id')"
+                (onFilterChange)="onFilterChange('volunteers', $event)"
+                [disabled]="type === 'view'"
+              >
+              </ng-multiselect-dropdown>
+              <!--input [readonly]="type === 'view'" formControlName="volunteers" type="text" class="form-control" placeholder="Volunteers"-->
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label>Project Task</label>
+              <textarea [readonly]="type === 'view'" formControlName="task" rows="3" class="form-control textarea" placeholder="Task Description"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Progress Status</label>
+              <select formControlName="progress" class="form-control select" name="">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Language</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Language'"
+                [settings]="dropdownSettingsLanguages"
+                [data]="languages"
+                formControlName="language_to"
+                [disabled]="type === 'view'"
+              >
+            </ng-multiselect-dropdown>
+              <input hidden formControlName="language_code_to" type="text" class="form-control" placeholder="Code">
+            </div>
+          </div>
+          <div class="d-none">
+            <div class="form-group">
+              <label>Verified</label>
+              <input [readonly]="type === 'view'" formControlName="verified" type="text" class="form-control" placeholder="Verified?">
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="type != 'view'">
+          <div class="update ml-auto mr-auto">
+            <button type="submit" class="btn btn-primary btn-round">Save Data</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-body" *ngIf="table_name === 'volunteers'">
+      <form *ngIf="showForm" [formGroup]="formEntry" id="formEntry" (ngSubmit)="postData(formEntry.value)">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>First name</label>
+              <input [readonly]="type === 'view'" formControlName="first_name" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Last name</label>
+              <input [readonly]="type === 'view'" formControlName="last_name" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 d-none">
+            <div class="form-group">
+              <label>Email</label>
+              <input [readonly]="type === 'view'" formControlName="email" type="url" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Profile Page</label>
+              <input [readonly]="type === 'view'" formControlName="profile" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Language</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Language'"
+                [settings]="dropdownSettingsLanguages"
+                [data]="languages"
+                formControlName="language"
+                [disabled]="type === 'view'"
+              >
+            </ng-multiselect-dropdown>
+              <!--input [readonly]="type === 'view'" formControlName="language" type="text" class="form-control" placeholder="Language"-->
+              <input hidden formControlName="language_code" type="text" class="form-control" placeholder="Code">
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-group">
+              <label>Secondary Languages</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose more languages'"
+                [settings]="dropdownSettingsLanguagesMultiple"
+                [data]="languages"
+                formControlName="secondary_languages"
+                [disabled]="type === 'view'"
+              >
+            </ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="d-none">
+            <div class="form-group">
+              <label>Verified</label>
+              <input [readonly]="type === 'view'" formControlName="verified" type="text" class="form-control" placeholder="Verified?">
+            </div>
+          </div>
+        </div>
+        <div class="row d-none">
+
+          <div class="col-6">
+            <!--div class="form-group">
+              <label>Attach User</label>
+              <input [readonly]="type === 'view'" formControlName="user_account" type="text" class="form-control" placeholder="">
+            </div-->
+          </div>
+        </div>
+        <div class="row" *ngIf="type != 'view'">
+          <div class="update ml-auto mr-auto">
+            <button type="submit" class="btn btn-primary btn-round">Save Data</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-body" *ngIf="table_name === 'bulk add'">
+      <form *ngIf="showForm" [formGroup]="formEntry" id="formEntry" (ngSubmit)="processFile(formEntry.value)">
+        <div class="row">
+          <div class="col-3" *ngIf="headers.length === 0">
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Upload CSV File</label>
+              <input (change)="fileUploaded($event)" [readonly]="type === 'view'" formControlName="csv_file" type="file" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-3" *ngIf="headers.length === 0">
+          </div>
+          <div class="col-3" *ngIf="headers.length > 0">
+            <div class="form-group">
+              <label>Profile column</label>
+              <select [readonly]="type === 'view'" formControlName="profile"class="form-control" placeholder="">
+                <option *ngFor="let item of headers" [value]="item">{{item}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-3" *ngIf="headers.length > 0">
+            <div class="form-group">
+              <label>Name column</label>
+              <select [readonly]="type === 'view'" formControlName="names"class="form-control" placeholder="">
+                <option *ngFor="let item of headers" [value]="item">{{item}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="type != 'view'">
+          <div class="update ml-auto mr-auto">
+            <button [disabled]="!formEntry.valid" type="submit" class="btn btn-primary btn-round">Process Data</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-body" *ngIf="table_name === 'words'">
+      <form *ngIf="showForm" [formGroup]="formEntry" id="formEntry" (ngSubmit)="postData(formEntry.value)">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Organisation</label>
+              <!--  (onSelectAll)="onSelectAll($event)" -->
+              <ng-multiselect-dropdown
+                [disabled]="type === 'view'"
+                [placeholder]="'Choose an Organisation'"
+                [settings]="dropdownSettings"
+                [data]="entriesOrganisations"
+                formControlName="organisation_id"
+                (onSelect)="onItemSelect($event, 'organisation_id', 'id')"
+                (onFilterChange)="onFilterChange('organisations', $event)"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Volunteer</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Volunteer'"
+                [settings]="dropdownSettings"
+                [data]="entriesVolunteers"
+                formControlName="volunteer_id"
+                (onSelect)="onItemSelect($event, 'volunteer_id', 'id')"
+                (onFilterChange)="onFilterChange('volunteers', $event)"
+                [disabled]="type === 'view'"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Words</label>
+              <input [readonly]="type === 'view'" formControlName="words" type="number" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label>Lng. (From)</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Language'"
+                [settings]="dropdownSettingsLanguages"
+                [data]="languages"
+                formControlName="language"
+                [disabled]="type === 'view'"
+              >
+            </ng-multiselect-dropdown>
+              <input hidden formControlName="language_code" type="text" class="form-control" placeholder="Code">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label>Lng. (To)</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Language'"
+                [settings]="dropdownSettingsLanguages"
+                [data]="languages"
+                formControlName="language_to"
+                [disabled]="type === 'view'"
+              >
+            </ng-multiselect-dropdown>
+              <input hidden formControlName="language_code_to" type="text" class="form-control" placeholder="Code">
+            </div>
+          </div>
+          <div class="d-none">
+            <div class="form-group">
+              <label>Verified</label>
+              <input [readonly]="type === 'view'" formControlName="verified" type="text" class="form-control" placeholder="Verified?">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Task</label>
+              <input [readonly]="type === 'view'" formControlName="task" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Date</label>
+              <input [readonly]="type === 'view'" (change)="setMonthYear($event)" type="date" [value]="activeDate" class="form-control" placeholder="">
+            </div>
+          </div>
+          <!--div class="col-3">
+            <div class="form-group">
+              <label>Year</label>
+              <input [readonly]="type === 'view'" formControlName="year" type="text" class="form-control" placeholder="">
+            </div>
+          </div-->
+        </div>
+
+        <div class="row" *ngIf="type === 'new'">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Create a project?</label>
+              <select formControlName="create_project" class="form-control" placeholder="Choose">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+              <!--input formControlName="create_project" type="checkbox" class="form-control" placeholder="Create"-->
+            </div>
+          </div>
+          <div class="col-6" *ngIf="formEntry.value.create_project == 'yes'">
+            <div class="form-group">
+              <label>Project Deadline</label>
+              <input formControlName="project_deadline" type="date" class="form-control" placeholder="">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Choose category</label>
+              <select [disabled]="type === 'view'" formControlName="category" class="form-control" placeholder="Choose">
+                <option *ngFor="let cat of categories" [value]="cat.value">{{cat.label}}</option>
+              </select>
+              <!--input formControlName="create_project" type="checkbox" class="form-control" placeholder="Create"-->
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="type != 'view'">
+          <div class="update ml-auto mr-auto">
+            <button type="submit" class="btn btn-primary btn-round">{{type === 'edit' ? 'Modify' : 'Save'}} Data</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-body" *ngIf="table_name === 'hours'">
+      <form *ngIf="showForm" [formGroup]="formEntry" id="formEntry" (ngSubmit)="postData(formEntry.value)">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Organisation</label>
+              <!--  (onSelectAll)="onSelectAll($event)" -->
+              <ng-multiselect-dropdown
+                [disabled]="type === 'view'"
+                [placeholder]="'Choose an Organisation'"
+                [settings]="dropdownSettings"
+                [data]="entriesOrganisations"
+                formControlName="organisation_id"
+                (onSelect)="onItemSelect($event, 'organisation_id', 'id')"
+                (onFilterChange)="onFilterChange('organisations', $event)"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Volunteer</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Volunteer'"
+                [settings]="dropdownSettings"
+                [data]="entriesVolunteers"
+                formControlName="volunteer_id"
+                (onSelect)="onItemSelect($event, 'volunteer_id', 'id')"
+                (onFilterChange)="onFilterChange('volunteers', $event)"
+                [disabled]="type === 'view'"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Hours</label>
+              <input [readonly]="type === 'view'" formControlName="hours" type="number" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label>Lng. (From)</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Language'"
+                [settings]="dropdownSettingsLanguages"
+                [data]="languages"
+                formControlName="language"
+                [disabled]="type === 'view'"
+              >
+            </ng-multiselect-dropdown>
+              <input hidden formControlName="language_code" type="text" class="form-control" placeholder="Code">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label>Lng. (To)</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Language'"
+                [settings]="dropdownSettingsLanguages"
+                [data]="languages"
+                formControlName="language_to"
+                [disabled]="type === 'view'"
+              >
+            </ng-multiselect-dropdown>
+              <input hidden formControlName="language_code_to" type="text" class="form-control" placeholder="Code">
+            </div>
+          </div>
+          <div class="d-none">
+            <div class="form-group">
+              <label>Verified</label>
+              <input [readonly]="type === 'view'" formControlName="verified" type="text" class="form-control" placeholder="Verified?">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Task Details</label>
+              <input [readonly]="type === 'view'" formControlName="task" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Date</label>
+              <input [readonly]="type === 'view'" (change)="setMonthYear($event)" type="date" [value]="activeDate" class="form-control" placeholder="">
+            </div>
+          </div>
+          <!--div class="col-3">
+            <div class="form-group">
+              <label>Year</label>
+              <input [readonly]="type === 'view'" formControlName="year" type="text" class="form-control" placeholder="">
+            </div>
+          </div-->
+        </div>
+
+        <!--div class="row" *ngIf="type === 'new'">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Create a project?</label>
+              <select formControlName="create_project" class="form-control" placeholder="Choose">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6" *ngIf="formEntry.value.create_project == 'yes'">
+            <div class="form-group">
+              <label>Project Deadline</label>
+              <input formControlName="project_deadline" type="date" class="form-control" placeholder="">
+            </div>
+          </div>
+        </div-->
+
+        <div class="row" *ngIf="type != 'view'">
+          <div class="update ml-auto mr-auto">
+            <button type="submit" class="btn btn-primary btn-round">{{type === 'edit' ? 'Modify' : 'Save'}} Data</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-body" *ngIf="table_name === 'stars'">
+      <form *ngIf="showForm" [formGroup]="formEntry" id="formEntry" (ngSubmit)="postData(formEntry.value)">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label>Volunteer</label>
+              <ng-multiselect-dropdown
+                [placeholder]="'Choose a Volunteer'"
+                [settings]="dropdownSettings"
+                [data]="entriesVolunteers"
+                formControlName="volunteer_id"
+                (onSelect)="onItemSelect($event, 'volunteer_id', 'id')"
+                (onFilterChange)="onFilterChange('volunteers', $event)"
+                [disabled]="type === 'view'"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Contribution type</label>
+              <select [disabled]="type === 'view'" (change)="setStars($event)" formControlName="type" class="form-control select" name="">
+                <option *ngFor="let opt of contributions" [value]="opt.id">{{opt.type}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Stars</label>
+              <input [readonly]="type === 'view'" formControlName="stars" type="number" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="d-none">
+            <div class="form-group">
+              <label>Verified</label>
+              <input [readonly]="type === 'view'" formControlName="verified" type="text" class="form-control" placeholder="Verified?">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Reason (if any)</label>
+              <input [readonly]="type === 'view'" formControlName="reason" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Date</label>
+              <input [readonly]="type === 'view'" (change)="setMonthYear($event)" type="date" [value]="activeDate" class="form-control" placeholder="">
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="type != 'view'">
+          <div class="update ml-auto mr-auto">
+            <button type="submit" class="btn btn-primary btn-round">{{type === 'edit' ? 'Modify' : 'Save'}} Data</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

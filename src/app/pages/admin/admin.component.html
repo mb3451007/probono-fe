@@ -1,0 +1,210 @@
+<div class="row admin-page" id="modal-container-admin">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header ">
+        <h5 class="card-title">ADMIN SUMMARY</h5>
+        <p class="summary_text">Words: <strong>{{numberWords | currency : '' : '' : '2.0'}}</strong> | Organisations: <strong>{{numberOrganisations | currency : '' : '' : '2.0'}}</strong> | Volunteers: <strong>{{numberVolunteers | currency : '' : '' : '2.0'}}</strong> | Hours: <strong>{{numberHours | currency : '' : '' : '2.0'}}</strong> </p>
+      </div>
+      <div class="card-body ">
+
+        <div class="card-description">
+          <div class="align-items-center py-2 p-lg-3">
+            <div class="row">
+              <div class="rounded-0 col-xs-12 col-sm-4 col-md-4 col-lg-3 col-xl-2 bg-lightc">
+                <div class="menu-item search-wrapper">
+                  <div class="position-relative d-flex header_wrapper_admin">
+                    <span class="text-gray-500 fw-bolder fs-4 ps-10">MANAGE</span>
+                  </div>
+                </div>
+
+                <div (click)="switchPages(button)" class="menu-item sub-button {{button.status}} my-3" routerLink="/admin-summary/{{button.url}}" *ngFor="let button of activeButtons">
+                  <a href="javascript:void(0)" class="custom_btn {{button.status}} px-3  py-3 w-100"> <!-- (click)="loadForms(button)" -->
+                    <span class="menu-section {{button.status == 'active' ? 'text-dark fw-bold' : 'text-muted'}} text-uppercase text-left fs-7 ls-1">{{button.name}}</span>
+                  </a>
+                </div>
+              </div>
+
+              <div id="cover-modal" class="col-xs-12 settings-content col-sm-8 col-md-8 col-lg-9 col-xl-10 px-md-5 px-lg-5 px-xl-5">
+                <div class="row">
+                  <div class="col-12" *ngIf="!showForm">
+                    <div class="row mb-3">
+                      <div class="col-12 col-md-4 col-lg-4 col-xl-4">
+                        <h4 class="card-title text-capitalize mt-3 mb-0 mx-1">{{page}}</h4>
+                      </div>
+
+                      <div class="col-12 col-md-8 col-lg-8 col-xl-8">
+                        <div class="d-block d-lg-flex flex-row">
+
+                          <form  *ngIf="page === 'projects'" class="rounded-5 w-100 search_inner_wrap mt-3 mb-0 mx-1 flex-1">
+                            <div class="input-group border-1 bg-white rounded-5" style="border-radius: 5px; overflow: hidden">
+                              <input type="text" value="" [(ngModel)]="filter" class="form-control rounded-5 bg-white" placeholder="Volunteer names">
+                              <div class="input-group-append bg-white rounded-5">
+                                <div class="input-group-text bg-white">
+                                  <i class="nc-icon nc-zoom-split"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+
+                        <form class="rounded-5 w-100 search_inner_wrap mt-3 mb-0 mx-1 flex-1">
+                          <div class="input-group border-1 bg-white rounded-5" style="border-radius: 5px; overflow: hidden">
+                            <input type="text" value="" (keyup)="searchFor($event)" class="form-control rounded-5 bg-white" placeholder="{{page === 'organisations' ? 'Org. name...' : page === 'projects' ? 'Task Description...' : 'First name'}}">
+                            <div class="input-group-append bg-white rounded-5">
+                              <div class="input-group-text bg-white">
+                                <i class="nc-icon nc-zoom-split"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+
+                        <ul class="rounded-5 navbar-nav special-button-per-page mt-3 mb-0 mx-1">
+                          <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
+                            <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >
+                              Show: {{totalItems}}
+                            </a>
+                            <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-left">
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(5)">5</a>
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(10)">10</a>
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(50)">50</a>
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(100)">100</a>
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(250)">250</a>
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setPerPage(10000)">Show all</a>
+                            </div>
+                          </li>
+                        </ul>
+                        <ul class="rounded-5 navbar-nav special-button-per-page mt-3 mb-0 mx-1" *ngIf="page === 'projects'">
+                          <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
+                            <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink">
+                              {{projectsStatus ? projectsStatus : 'All'}}
+                            </a>
+                            <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-left">
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setProjectsStatus('Not Started')">Not Started</a>
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setProjectsStatus('In Progress')">In Progress</a>
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setProjectsStatus('Completed')">Completed</a>
+                              <a ngbDropdownItem href="javascript:void(0)" (click)="setProjectsStatus('')">Show All</a>
+                            </div>
+                          </li>
+                        </ul>
+
+                        <button type="button" class="btn btn-primary mt-3 mb-0 new-record-btn" (click)="addOrganisation()">Add <i class="nc-icon nc-simple-add"></i></button>
+                        </div>
+                      </div>
+
+                      <!--div class="col-5">
+                        <form *ngIf="page !== 'words'" class="rounded-5 search_inner_wrap mt-3 mb-0 mx-1 float-right">
+                          <div class="input-group border-1 bg-white rounded-5" style="border-radius: 5px; overflow: hidden">
+                            <input type="text" value="" (keyup)="searchFor($event)" class="form-control rounded-5 bg-white" placeholder="{{page === 'organisations' ? 'Org. name...' : 'First name'}}">
+                            <div class="input-group-append bg-white rounded-5">
+                              <div class="input-group-text bg-white">
+                                <i class="nc-icon nc-zoom-split"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                        </div>
+                        <div class="col-3">
+                        <button type="button" class="btn btn-primary float-right mt-3 mb-0" (click)="addOrganisation()">New Record <i class="nc-icon nc-simple-add"></i></button>
+                        <div class="clearfix"></div>
+                      </div-->
+                    </div>
+
+                    <div class="row">
+                      <div class="col-12" *ngIf="!showRecords">
+
+                        <div class="card h-400px">
+                          <div class="card-body">
+
+                            <div class="w-100 py-5 loading_wrapp align-items-center mx-auto my-5" *ngIf="entries.length === 0">
+                              <div class="text-center">
+                                <div *ngIf="isLoading === true" class="spinner-grow text-success" style="width: 6rem; height: 6rem;" role="status">
+                                  <span class="sr-only">Loading...</span>
+                                </div>
+                                <p *ngIf="isLoading === true" class="text-muted fs-3 fw-normal my-5">Loading records, please wait...</p>
+                                <p *ngIf="isLoading === false" class="text-muted fs-3 fw-normal my-5">No Records. Contact your admin.</p>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-12" *ngIf="showRecords">
+                        <organisations-table [isSearching]="isSearching" (setPage)="loadNavPage($event)" (setSortData)="sortData($event)" [user]="user" [title]="page" [itemsPerPage]="itemsPerPage" [totalItems]="totalItems" [page]="pageItem" [entries]="entries" [entriesOrganisations]="entriesOrganisations" [entriesVolunteers]="entriesVolunteers" [entriesWords]="entriesWords" [entriesHours]="entriesHours" [entriesStars]="entriesStars"  [entriesProjects]="entriesProjects" [filter]="filter"></organisations-table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12" *ngIf="showForm">
+                    <div class="row mb-3">
+                      <div class="col-2">
+                        <!--h4 class="card-title text-capitalize">{{page}}</h4-->
+                        </div>
+                        <div class="col-10">
+                          <button type="button" class="btn btn-primary float-right mt-3 mb-0  d-block" (click)="backList()">Back to List <i class="nc-icon nc-simple-add"></i></button>
+                          <button *ngIf="page === 'volunteers'" type="button" class="btn btn-primary float-right mt-3 mb-0  d-block" (click)="changePage('bulk add')">Bulk add <i class="nc-icon nc-simple-add"></i></button>
+                          <button *ngIf="page === 'bulk add'" type="button" class="btn btn-primary float-right mt-3 mb-0  d-block" (click)="changePage('volunteers')">Single add <i class="nc-icon nc-simple-add"></i></button>
+                          <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <app-modal-form *ngIf="page" [table_name]="page" [record]="null" [record]="null" [type]="'new'"></app-modal-form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--app-modal #modal [modalConfig]="modalConfig">
+                </app-modal-->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--div class="row">
+  <div class="col-md-4">
+    <div class="card ">
+      <div class="card-header ">
+        <h5 class="card-title">By Organisations</h5>
+        <p class="card-category">Last Campaign Performance</p>
+      </div>
+      <div class="card-body">
+      </div>
+      <div class="card-footer">
+        <div class="legend">
+          <i class="fa fa-circle text-primary"></i> Opened
+          <i class="fa fa-circle text-warning"></i> Read
+          <i class="fa fa-circle text-danger"></i> Deleted
+          <i class="fa fa-circle text-gray"></i> Unopened
+        </div>
+        <hr>
+        <div class="stats">
+          <i class="fa fa-calendar"></i> Number of emails sent
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card card-chart">
+      <div class="card-header">
+        <h5 class="card-title">Words Completed: YTD</h5>
+        <p class="card-category">Line Chart with Points</p>
+      </div>
+      <div class="card-body">
+      </div>
+      <div class="card-footer">
+        <div class="chart-legend">
+          <i class="fa fa-circle text-info"></i> Tesla Model S
+          <i class="fa fa-circle text-warning"></i> BMW 5 Series
+        </div>
+        <hr/>
+        <div class="card-stats">
+          <i class="fa fa-check"></i> Data information certified
+        </div>
+      </div>
+    </div>
+  </div>
+</div-->

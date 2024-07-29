@@ -1,0 +1,83 @@
+<ng-template #modal>
+  <div class="modal-content w-700px h-80">
+    <div class="modal-body">
+      <div class="tables_content p-0">
+
+        <div class="form_section overflow-y-auto h-450px" *ngIf="showUserForm">
+          <div class="row">
+            <div class="col-12">
+              <button type="button" class="btn btn-primary mt-3 mb-0 new-record-btn w-200px float-right" (click)="goBack()">Go Back <i class="nc-icon nc-simple-add"></i></button>
+            </div>
+            <div class="col-12">
+              <app-modal-form2 (formActions)="formUpdates($event)" [table_name]="table" [record]="record" [recordId]="record?.id" [type]="type"></app-modal-form2>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="!showUserForm">
+          <div class="col-12">
+            <button type="button" class="btn btn-primary mt-3 mb-0 new-record-btn w-200px float-right" (click)="addUser()">Add User <i class="nc-icon nc-simple-add"></i></button>
+          </div>
+
+          <div class="col-12" *ngIf="allUsers.length === 0">
+            <div class="w-100 py-5 loading_wrapp align-items-center mx-auto my-5" *ngIf="allUsers.length === 0">
+              <div class="text-center">
+                <div *ngIf="isLoading === true" class="spinner-grow text-success" style="width: 6rem; height: 6rem;" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <p *ngIf="isLoading === true" class="text-muted fs-3 fw-normal my-5">Loading users, please wait...</p>
+                <p *ngIf="isLoading === false" class="text-muted fs-3 fw-normal my-5">No Users. Contact your admin.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form_section overflow-y-auto h-450px button_action_style" *ngIf="allUsers.length > 0">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>#</th>
+                  <th>Names</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Permission</th>
+                  <th class="text-right">Status</th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let rec of allUsers | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: allUsers.length}; let i = index">
+                    <td>{{(page - 1) * itemsPerPage + i + 1}})</td>
+                    <td>{{rec.first_name}} {{rec.last_name}}</td>
+                    <td>{{rec.email}}</td>
+                    <td>{{rec.phone}}</td>
+                    <td class="text-capitalize">{{rec.permission}}</td>
+                    <td class="text-right">{{rec.status == 1 ? 'Active' : 'Inactive'}}</td>
+                    <td class="text-right">
+                      <div class="action_buttons d-block">
+                        <button class="btn bg-primary" (click)="changePassword(rec)"><i class="nc-icon nc-lock-circle-open"></i></button>
+                        <button class="btn bg-primary" (click)="editRecord(rec)"><i class="nc-icon nc-settings"></i></button>
+                        <button class="btn bg-danger" (click)="removeRecord(rec)"><i class="nc-icon nc-simple-remove"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <pagination-controls
+              class="pagi"
+              (pageChange)="page = $event"></pagination-controls>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="close()"
+        *ngIf="modalConfig.hideCloseButton === undefined || !modalConfig.hideCloseButton()"
+        [disabled]="modalConfig.disableCloseButton !== undefined && modalConfig.disableCloseButton()">
+        {{ modalConfig.closeButtonLabel }}
+      </button>
+    </div>
+  </div>
+</ng-template>
