@@ -13,6 +13,7 @@ export interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', guest: true, admin: true,    title: 'OVERVIEW',              icon:'nc-bank',       class: '' },
+    { path: '/hub', guest: true, admin: true,    title: 'Hub', icon:'nc-planet',       class: '' },
     { path: '/organisations', guest: true,  admin: true,   title: 'Organisations',     icon:'nc-diamond',       class: '' },
     { path: '/volunteers', guest: true, admin: true,    title: 'Volunteers',        icon:'nc-favourite-28',       class: '' },
     { path: '/projects', guest: true, admin: true,    title: 'Projects',        icon:'nc-ambulance',       class: '' },

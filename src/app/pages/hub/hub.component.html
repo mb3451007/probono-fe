@@ -1,0 +1,91 @@
+<div class="card card-upgrade row" style="margin:5px">
+  <form [formGroup]="form" (ngSubmit)="onSave()" id="loginForm" class="py-10 px-5 w-300px">
+    <div class="d-flex custom-flex justify-content-between mb-5">
+      <div class="col-md-6">
+        <div class="card-header text-center pt-5 d-flex row">
+          <h4 class="card-title col-10" style="">Translator</h4>
+          <div class="icon d-flex justify-content-center align-items-center col-2" style="padding: 0;">
+            <i class="add-icon nc-icon nc-simple-add" (click)="addTranslatorForm()"></i>
+          </div>
+        </div>
+        <div class="card-body">
+          <div formArrayName="translators">
+            <div class="input-fields" [class.marginBottom]="i!=translators.controls.length-1" *ngFor="let translator of translators.controls; let i = index"
+              [formGroupName]="i" [@fadeIn] [@slideOut]>
+              <div *ngIf="delIcon" class="icon d-flex justify-content-end align-items-center">
+                <i class="del-icon nc-icon nc-basket" (click)="deleteTranslatorForm(i)"> </i>
+              </div>
+              <!-- <input formControlName="name" placeholder="Name"> -->
+              <div class="mb-3 mt-0" style="height: 75px;">
+                <label class="form-label mb-1">Name:</label>
+                <input class="form-control form-control-solid" type="text" formControlName="transName" [ngClass]="{'error-border': translator.get('transName').invalid && translator.get('transName').touched}"/>
+                <div *ngIf="translator.get('transName').invalid && translator.get('transName').touched" class="error"
+                  style="color: red;">
+                  Name is required.
+                </div>
+              </div>
+              <!-- <input formControlName="language" placeholder="Language"> -->
+              <div class="mb-3 mt-0" style="height: 75px;">
+                <label class="form-label mb-1">Email: </label>
+                <input class="form-control form-control-solid" type="email" formControlName="transEmail"
+                  (blur)="translator.get('transEmail').markAsTouched()" [ngClass]="{
+                    'error-border': (translator.get('transEmail').invalid && translator.get('transEmail').touched) || (translator.get('transEmail').errors?.['email'] && translator.get('transEmail').touched && translator.get('transEmail').dirty)
+                  }"/>
+                <div *ngIf="translator.get('transEmail').invalid && translator.get('transEmail').touched" class="error">
+                  <div *ngIf="translator.get('transEmail').errors?.['required']" style="color: red;">
+                    Email is required.
+                  </div>
+                  <div *ngIf="translator.get('transEmail').errors?.['email']" style="color: red;">
+                    Email format is invalid.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card-header text-center pt-5">
+          <h4 class="card-title">Reviewer</h4>
+        </div>
+        <div class="card-body">
+
+          <div id="loginForm" class="py-10 w-300px">
+            <div class="mb-3" [class.marginTop]="delIcon" style="height: 75px;">
+              <label class="form-label mb-1" >Name:</label>
+              <input class="form-control form-control-solid" [ngClass]="{'error-border': form.get('RevName').invalid && form.get('RevName').touched}" type="text" formControlName="RevName" />
+              <div *ngIf="form.get('RevName').invalid && form.get('RevName').touched" class="error" style="color: red;">
+                Name is required.
+              </div>
+            </div>
+
+            <div class="mb-3 mt-0" style="height: 75px;">
+              <label class="form-label mb-1">Email: </label>
+              <input class="form-control form-control-solid" type="email" formControlName="RevEmail"
+                (blur)="form.get('RevEmail').markAsTouched()" [ngClass]="{
+                  'error-border': (form.get('RevEmail').invalid && form.get('RevEmail').touched) || (form.get('RevEmail').errors?.['email'] && form.get('RevEmail').touched && form.get('RevEmail').dirty)
+                }" />
+              <div *ngIf="form.get('RevEmail').invalid && form.get('RevEmail').touched" class="error">
+                <div *ngIf="form.get('RevEmail').errors?.['required']" style="color: red;">
+                  Email is required.
+                </div>
+                <div *ngIf="form.get('RevEmail').errors?.['email']" style="color: red;">
+                  Email format is invalid.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row pb-5">
+    <div class="col-12 text-center">
+      <button class="btn bg-success" type="submit" (click)="onSave()" [disabled]="!form.valid">Save</button>
+    </div>
+  </div>
+
+</div>

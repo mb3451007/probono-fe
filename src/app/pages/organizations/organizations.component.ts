@@ -11,6 +11,7 @@ import * as moment from 'moment';
 export class OrganizationsComponent implements OnInit{
     public entriesOrganisations: any[] = [];
     isLoading: boolean = false;
+    arr=[1,2,3,4]
     user: any = {token: 'none'};
     error: any;
     page: number = 1;

@@ -16,17 +16,25 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { TimeSincePipe } from './pipes/time-since.pipe';
+import { CommonModule } from "@angular/common";
+import { HubComponent } from "./pages/hub/hub.component";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { ChatComponent } from "./chat/chat.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    TimeSincePipe
+    TimeSincePipe,
+    HubComponent,
+    ChatComponent
+
 //    OverduePipe
   ],
   imports: [
     BrowserAnimationsModule,
+    NgbModule,
     RouterModule.forRoot(AppRoutes,{
       useHash: false
     }),
@@ -38,7 +46,9 @@ import { TimeSincePipe } from './pipes/time-since.pipe';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ReactiveFormsModule,
+    CommonModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

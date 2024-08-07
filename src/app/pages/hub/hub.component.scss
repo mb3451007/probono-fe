@@ -1,0 +1,59 @@
+
+
+.add-icon{
+    color: #66615b;
+    opacity: 0.7;
+    font-size:larger;
+    font-weight: bolder;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+.add-icon:hover{
+    cursor: pointer;
+    opacity: 1;
+}
+
+.del-icon{
+    color: #66615b;
+    opacity: 0.7;
+    font-size:larger;
+    font-weight: bolder;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+.del-icon:hover{
+    color: rgb(206, 22, 22);
+    cursor: pointer;
+    opacity: 1;
+}
+
+.hidden{
+    display: none;
+}
+.flex{
+    display: flex;
+}
+
+.marginBottom{
+    margin-bottom: 5rem;
+}
+.marginLast{
+    margin-bottom: 0;
+}
+
+.marginTop{
+    margin-top: 0.96rem;
+}
+
+.error-border {
+    border-color: red !important;
+  }
+
+  .error-border:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25) !important;
+    outline: none;
+  }
+
+  @media (max-width: 766px) {
+    .custom-flex {
+      flex-direction: column;
+    }
+  }

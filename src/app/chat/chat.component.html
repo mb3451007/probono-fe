@@ -1,0 +1,191 @@
+<div class="row">
+  <div class="col-md-12 col-lg-9 d-flex f-direc justify-content-between" style="">
+    <!-- <div class="row" style="width: 100%;"> -->
+
+      <div class="card card-upgrade m-1 custom-width" style="height: 87.5%;">
+        <div class="card-body d-flex flex-column justify-content-center align-items-center  custom-scrollbar1"
+          style="overflow-y: auto; overflow-x: hidden; max-height: 535px; padding-top:50px">
+          <a *ngFor="let file of card1"
+            class="card text-decoration-none file-download row d-flex justify-content-center align-items-center p-3 file-card-width"
+            data-bs-toggle="tooltip" title="{{file.name}}" [href]="file.path" download
+            style="min-height: 15%;">
+            <div class="col-5  file-icon d-flex justify-content-center align-items-center"
+              style="padding-left: 0.5rem; padding-right: 0.5rem;">
+              <i class="nc-icon nc-single-copy-04" style="font-size: 2rem;"></i>
+            </div>
+            <h6 class="col-7 file-name" style="padding-top: 0.5rem; padding-left: 0.5rem;">{{file.name}}</h6>
+          </a>
+        </div>
+        <div class="icon d-flex justify-content-center align-items-center p-3">
+          <i class="nc-icon nc-cloud-upload-94" style="font-size: 2rem; cursor: pointer;"></i>
+        </div>
+      </div>
+  
+      <div class="card card-upgrade m-1 custom-width" style="height: 87.5%;">
+        <div class="card-body d-flex flex-column justify-content-center align-items-center  custom-scrollbar1"
+          style="overflow-y: auto; overflow-x: hidden; max-height: 535px; padding-top:50px">
+          <a *ngFor="let file of card2"
+            class="card text-decoration-none file-download row d-flex justify-content-center align-items-center p-3 file-card-width"
+            data-bs-toggle="tooltip" title="{{file.name}}" [href]="file.path" download
+            style="min-height: 15%;">
+            <div class="col-5  file-icon d-flex justify-content-center align-items-center"
+              style="padding-left: 0.5rem; padding-right: 0.5rem;">
+              <i class="nc-icon nc-single-copy-04" style="font-size: 2rem;"></i>
+            </div>
+            <h6 class="col-7 file-name" style="padding-top: 0.5rem; padding-left: 0.5rem;">{{file.name}}</h6>
+          </a>
+        </div>
+        <div class="icon d-flex justify-content-center align-items-center p-3 ">
+          <i class="nc-icon nc-cloud-upload-94" style="font-size: 2rem; cursor: pointer;"></i>
+        </div>
+      </div>
+  
+  
+        <div class="card card-upgrade m-1 custom-width" style="height: 87.5%;">
+          <div class="card-body d-flex flex-column justify-content-center align-items-center  custom-scrollbar1"
+            style="overflow-y: auto; overflow-x: hidden; max-height: 535px; padding-top:50px">
+            <a *ngFor="let file of card3"
+              class="card text-decoration-none file-download row d-flex justify-content-center align-items-center p-3 file-card-width"
+              data-bs-toggle="tooltip" title="{{file.name}}" [href]="file.path" download
+              style="min-height: 15%;">
+              <div class="col-5  file-icon d-flex justify-content-center align-items-center"
+                style="padding-left: 0.5rem; padding-right: 0.5rem;">
+                <i class="nc-icon nc-single-copy-04" style="font-size: 2rem;"></i>
+              </div>
+              <h6 class="col-7 file-name" style="padding-top: 0.5rem; padding-left: 0.5rem;">{{file.name}}</h6>
+            </a>
+          </div>
+          <div class="icon d-flex justify-content-center align-items-center p-3 ">
+            <i class="nc-icon nc-cloud-upload-94" style="font-size: 2rem; cursor: pointer;"></i>
+          </div>
+        </div>
+      
+
+    <!-- </div> -->
+    
+
+  </div>
+  <div class="col-md-12 col-lg-3" style="">
+    <section>
+      <div class="container py-1" style="padding-right: 0; padding-left: 0;">
+
+        <div class="row d-flex justify-content-center">
+          <div class="">
+
+            <div class="card" id="chat2" style="margin: 0;">
+              <div class="card-header d-flex justify-content-between align-items-center p-3"
+                style="border-bottom: 2px solid #e3e4e6;">
+                <h5 class="mb-0">Chat</h5>
+              </div>
+
+              <div class="card-body custom-scrollbar" data-mdb-perfect-scrollbar-init
+                style="position: relative; height: 400px; overflow-y: auto;">
+
+                <div class="d-flex flex-row justify-content-start">
+                  <div>
+                    <p class="small p-2 ms-2 mb-1 rounded-3 bg-body-secondary">Hi</p>
+                    <p class="small p-2 ms-2 mb-1 rounded-3 bg-body-secondary">How are you ...???
+                    </p>
+                    <p class="small p-2 ms-2 mb-1 rounded-3 bg-body-secondary">What are you doing
+                      tomorrow? Can we come up a bar?</p>
+                    <p class="small ms-2 mb-3 rounded-3 text-muted">23:58</p>
+                  </div>
+                </div>
+
+                <div class="divider d-flex align-items-center mb-4">
+                  <p class="text-center mx-3 mb-0" style="color: #a2aab7;">Today</p>
+                </div>
+
+                <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                  <div>
+                    <p class="small p-2 me-2 mb-1 text-white rounded-3" style="background-color: #008070;">Hiii, I'm
+                      good.</p>
+                    <p class="small p-2 me-2 mb-1 text-white rounded-3" style="background-color: #008070;">How are you
+                      doing?</p>
+                    <p class="small p-2 me-2 mb-1 text-white rounded-3" style="background-color: #008070;">Long time no
+                      see! Tomorrow
+                      office. will
+                      be free on sunday.</p>
+                    <p class="small me-2 mb-3 rounded-3 text-muted d-flex justify-content-end">00:06</p>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-start mb-4">
+                  <div>
+                    <p class="small p-2 ms-2 mb-1 rounded-3 bg-body-secondary">Okay</p>
+                    <p class="small p-2 ms-2 mb-1 rounded-3 bg-body-secondary">We will go on
+                      Sunday?</p>
+                    <p class="small ms-2 mb-3 rounded-3 text-muted">00:07</p>
+                  </div>
+                </div>
+
+                <div class="divider d-flex align-items-center mb-5">
+                  <div class="flex-grow-1 border-top"></div>
+                  <span class="px-3 text-muted">Today</span>
+                  <div class="flex-grow-1 border-top"></div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-end mb-4">
+                  <div>
+                    <p class="small p-2 me-2 mb-1 text-white rounded-3" style="background-color: #008070;">That's
+                      awesome!</p>
+                    <p class="small p-2 me-2 mb-1 text-white rounded-3" style="background-color: #008070;">I will meet
+                      you Sandon Square
+                      sharp at
+                      10 AM</p>
+                    <p class="small p-2 me-2 mb-1 text-white rounded-3" style="background-color: #008070;">Is that okay?
+                    </p>
+                    <p class="small me-2 mb-3 rounded-3 text-muted d-flex justify-content-end">00:09</p>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-start mb-4">
+                  <div>
+                    <p class="small p-2 ms-2 mb-1 rounded-3 bg-body-secondary">Okay i will meet
+                      you on
+                      Sandon Square</p>
+                    <p class="small ms-2 mb-3 rounded-3 text-muted">00:11</p>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-end mb-4">
+                  <div>
+                    <p class="small p-2 me-2 mb-1 text-white rounded-3" style="background-color: #008070;">Do you have
+                      pictures of Matley
+                      Marriage?</p>
+                    <p class="small me-2 mb-3 rounded-3 text-muted d-flex justify-content-end">00:11</p>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-start mb-4">
+                  <div>
+                    <p class="small p-2 ms-2 mb-1 rounded-3 bg-body-secondary">Sorry I don't
+                      have. i
+                      changed my phone.</p>
+                    <p class="small ms-2 mb-3 rounded-3 text-muted">00:13</p>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-end">
+                  <div>
+                    <p class="small p-2 me-2 mb-1 text-white rounded-3" style="background-color: #008070;">Okay then see
+                      you on sunday!!
+                    </p>
+                    <p class="small me-2 mb-3 rounded-3 text-muted d-flex justify-content-end">00:15</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1"
+                  placeholder="Type message" style="padding: 0.5rem; min-height: 1.25rem; font-size: 1rem;">
+                <a class="ms-2 pt-1" href="#!"><i class="nc-icon nc-send hover-effect-send-icon" style="font-size: 1.25rem; cursor: pointer;"></i></a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
