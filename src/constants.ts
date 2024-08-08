@@ -1,5 +1,7 @@
 // import * as env from './environments/environment';
-export const MAIN_URL = "https://api.prozprobonostats.com/"; //env.environment.api; //"http://localhost:8080/"; //
+// export const MAIN_URL = "https://api.prozprobonostats.com/";
+export const MAIN_URL = "http://localhost:8080/";
+ //env.environment.api; //"http://localhost:8080/"; //
 export const REST_URL = MAIN_URL + 'api/v1/';
 
 export const CATEGORIES = [

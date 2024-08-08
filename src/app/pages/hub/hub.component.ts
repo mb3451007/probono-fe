@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { log } from 'console';
+import { MainService } from '../../api/main.service';
 
 @Component({
     selector: 'hub-cmp',
@@ -32,7 +33,7 @@ export class HubComponent{
     delIcon=false
     renderer: any;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,private MainService:MainService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -71,7 +72,7 @@ export class HubComponent{
   }
 
   onSave(){
-    console.log(this.form.value);
+    // console.log(this.form.value);
     let transName=[]
     let transEmail=[]
     for (let index = 0; index < this.form.value.translators.length; index++) {
@@ -85,7 +86,12 @@ export class HubComponent{
       transEmail: transEmail.join(','),
     }
 
-    console.log(receivedData)
+    console.log(receivedData,'this is data recievd from form')
+    this.MainService.uploadForm(receivedData).subscribe((response)=>{
+      console.log(response, "this is api responce");
+      
+    })
+    
   }
 
     

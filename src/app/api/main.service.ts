@@ -564,4 +564,12 @@ export class MainService {
       }
     })
   }
+
+  uploadForm(data:any):any{
+   return this.http.post(Config.REST_URL + 'uploadform' , data )
+  }
+
+  uploadFiles(data:any):any{
+   return this.http.post(Config.REST_URL + 'uploadfiles' , data )
+  }
 }
