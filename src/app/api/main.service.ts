@@ -569,7 +569,10 @@ export class MainService {
    return this.http.post(Config.REST_URL + 'uploadform' , data )
   }
 
-  uploadFiles(data:any):any{
-   return this.http.post(Config.REST_URL + 'uploadfiles' , data )
+  uploadFiles( data:any):any{
+   return this.http.post(Config.REST_URL + 'uploadfiles' ,  data )
+  }
+  saveFile( data:any):any{
+   return this.http.post(Config.REST_URL + 'savefiles' ,  data )
   }
 }

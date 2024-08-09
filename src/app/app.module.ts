@@ -19,7 +19,7 @@ import { TimeSincePipe } from './pipes/time-since.pipe';
 import { CommonModule } from "@angular/common";
 import { HubComponent } from "./pages/hub/hub.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { ChatComponent } from "./chat/chat.component";
+import { ChatComponent } from "./pages/chat/chat.component";
 
 
 @NgModule({

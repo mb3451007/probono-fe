@@ -9,7 +9,7 @@ import { AdminComponent } from '../../pages/admin/admin.component';
 import { GlossaryComponent } from '../../pages/glossary/glossary.component';
 import { BeltsComponent } from '../../pages/belts/belts.component';
 import { HubComponent } from 'app/pages/hub/hub.component';
-import { ChatComponent } from 'app/chat/chat.component';
+import { ChatComponent } from 'app/pages/chat/chat.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
