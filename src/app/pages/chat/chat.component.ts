@@ -37,6 +37,7 @@ export class ChatComponent {
     {name:'EX3', path:'/assets/files/card3/ex3.txt'},
   ]
   uploadedFile:any
+  fileName:string=''
 
   constructor(private MainService:MainService, private http: HttpClient) {
     
@@ -67,21 +68,24 @@ export class ChatComponent {
     console.log ('formdata', formData.get('panel'))
     console.log ('formdata', formData.get('uploaded_by'))
 
-    this.uploadedFile={
-      hub_id: '123',
-      file_uploaded: file.name,
-      panel: panel,
-      uploaded_by: 'ABC'
-    }
+    
 
-    console.log('uploaded file', this.uploadedFile)
-
+    
     this.MainService.uploadFiles(formData).subscribe((response)=>{
-      console.log(response, "this is api responce");
+      console.log(response, "this is api response");
+      this.fileName=response.filename
+      this.uploadedFile={
+        hub_id: '123',
+        file_uploaded: this.fileName,
+        panel: panel,
+        uploaded_by: 'ABC'
+      }
+      console.log(this.uploadedFile)
+      this.saveFileToDB(this.uploadedFile)
     })
     input.value = '';
-
-    this.saveFileToDB(this.uploadedFile)
+    
+    
   }
 
   saveFileToDB(file: any){
